@@ -7,16 +7,39 @@
 ;  * Use CapsLock as LControl when used in conjunction with some other key or if it's held longer than 300ms
 ;  * Toggle CapsLock by pressing LControl+CapsLock
 
+#NoEnv
+#SingleInstance force
+#MaxHotkeysPerInterval 99000000
+#HotkeyInterval 99000000
+ListLines Off
+Process, Priority, , A
+SetBatchLines, -1
+SetKeyDelay, -1, -1
+SetMouseDelay, -1
+SetDefaultMouseSpeed, 0
+SetWinDelay, -1
+SetControlDelay, -1
+SendMode Input
+
 #InstallKeybdHook
 SetCapsLockState, alwaysoff
+SetScrollLockState, alwaysoff
 StartTime := 0
-*Capslock::
-if (GetKeyState("LControl", "P")) {
-  KeyWait, CapsLock
-  Send {CapsLock Down}
-  return
-}
++ScrollLock::
+If GetKeyState("CapsLock", "T") = 1
+  SetCapsLockState, AlwaysOff
+Else 
+  SetCapsLockState, AlwaysOn
+Return
 
+; *Capslock::
+; if (GetKeyState("LControl", "P")) {
+;   KeyWait, CapsLock
+;   Send {CapsLock Down}
+;   return
+; }
+
+*Capslock::
 Send {LControl Down}
 State := (GetKeyState("Alt", "P") || GetKeyState("Shift", "P") || GetKeyState("LWin", "P") || GetKeyState("RWin", "P"))
 if (  !State
@@ -41,3 +64,9 @@ if (  (A_PriorKey = "CapsLock")
 
 StartTime := 0
 return
+
+^Escape::return
+
+LControl & Escape::return
+Escape & LControl::return
+Escape::Escape
