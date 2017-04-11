@@ -28,7 +28,7 @@ StartTime := 0
 +ScrollLock::
 If GetKeyState("CapsLock", "T") = 1
   SetCapsLockState, AlwaysOff
-Else 
+Else
   SetCapsLockState, AlwaysOn
 Return
 
